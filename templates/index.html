@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client UI</title>
+    <script>
+        function startCommunication() {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "Starting communication...";
+
+    fetch('http://localhost:4000/start')  // Update the port to 3000
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            resultsDiv.innerHTML = ""; // Clear the initial message
+            data.forEach((message) => {
+                const p = document.createElement("p");
+                p.textContent = message;
+                resultsDiv.appendChild(p);
+            });
+        })
+        .catch(error => {
+            resultsDiv.innerHTML = "Error: " + error.message;
+        });
+}
+    </script>
+</head>
+<body>
+    <h1>WebSocket Client UI</h1>
+    <button onclick="startCommunication()">Start Communication</button>
+    <div id="results" style="margin-top: 20px;"></div>
+</body>
+</html>
